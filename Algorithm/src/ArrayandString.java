@@ -41,6 +41,61 @@ public class ArrayandString {
         return count <= 1;
 	}
 	
+	//One way
+	boolean oneEditaway(String s, String t) {
+		if(Math.abs(s.length() - t.length()) > 1) return false;
+		
+		String s1 = s.length() < t.length() ? s: t;
+		String s2 = s.length() < t.length() ? t: s;
+		
+		int index1 = 0;
+		int index2 = 0;
+		
+		boolean foundDiff = false;
+		
+		while(index1 < s1.length() && index2 < s2.length()) {
+			if(s1.charAt(index1) != s2.charAt(index2)) {
+				if(foundDiff) return false;
+				foundDiff = true;
+				if(s1.length() == s2.length()) index1++;
+			} else {
+				index1++;
+			}
+			index2++;
+		}
+		return true;
+	}
+	
+	//String Compression
+	String compress(String s) {
+		int result = countCompress(s);
+		if(result >= s.length()) return s;
+		
+		StringBuilder compressed = new StringBuilder(result);
+		int consec = 0;
+		for(int i = 0; i < s.length(); i++) {
+			consec++;
+			if(i + 1 >= s.length() || s.charAt(i) != s.charAt(i + 1)) {
+				compressed.append(s.charAt(i));
+				compressed.append(consec);
+				consec = 0;
+			}
+		}
+		return compressed.toString();
+	}
+	
+	int countCompress(String s) {
+		int result = 0;
+		for(int i = 0; i < s.length(); i++) {
+			
+			//System.out.println(s.charAt(i + 1));
+			if(i + 1 == s.length() || s.charAt(i) != s.charAt(i + 1)) {
+				result += 2;
+			}
+		}
+		return result;
+	}
+	
 	public static void main(String[] args) {
 		ArrayandString s = new ArrayandString();
 		
@@ -48,6 +103,6 @@ public class ArrayandString {
 		
 		s.replaceSpaces(test, 6);
 		
-		System.out.println(1 % 2);
+		System.out.println(s.compress("fferrrrtgghhh"));// a2b2c2d3e2f1
 	}
 }
